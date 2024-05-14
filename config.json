@@ -1,9 +1,9 @@
 
 {
-    "share_point":
-    {
-        "user":"{email_address}",
-        "password": "{pwd}",
-        "site":"https://{sudbomain}.sharepoint.com/sites/{site_name}/"
+    "share_point": {
+        "user": "anchisap@ssi-steel.com",
+        "password": "ํYOYOnut2546",
+        "url": "https://ssigroups.sharepoint.com",
+        "site": "https://ssigroups.sharepoint.com/sites/SSI-ITScouting-KnowledgeSharing"
     }
 }
