@@ -1,26 +1,24 @@
-from sharepoint import SharePoint  # นำเข้า SharePoint จากไฟล์หรือโมดูลที่คุณสร้าง
-from openpyxl import Workbook
-
-# get CL1_S1007_Absence_Request sharepoint list
-CL1_S1007_Absence_Requests = SharePoint().connect_to_list(list_name='CL1_S1007_Absence_Request')  # แก้ไขชื่อพารามิเตอร์เป็น list_name
-
-# create excel workbook
-wb = Workbook()
-
-dest_filepath = 'CL1_S1007_Absence_Request_list.xlsx'
-
-# create worksheet
-ws = wb.active
-ws.title = 'CL1_S1007_Absence_Request'
-
-# setting SharePoint list values to excel cells
-for idx, request in enumerate(CL1_S1007_Absence_Requests, 1):  # แก้ไขชื่อในลูปให้ไม่ซ้ำกัน
-    ws.cell(column=1, row=idx, value=request['Title'])  # แก้ไขชื่อฟิลด์เป็น request
-    ws.cell(column=2, row=idx, value=request['AddressInfo: Street'])  # แก้ไขชื่อฟิลด์ให้ถูกต้อง
-    ws.cell(column=3, row=idx, value=request['AddressInfo: City'])  # แก้ไขพารามิเตอร์ column
-
-# save workbook
-wb.save(filename=dest_filepath)
+import pandas as pd
+from shareplum import Site, Office365
+from shareplum.site import Version
+ 
+# Authenticate and connect to the SharePoint site
+authcookie = Office365('https://ssigroups.sharepoint.com', username='udomw@ssi-steel.com', password='Ab123456').GetCookies()
+site = Site('https://ssigroups.sharepoint.com/sites/SSI-ITScouting-KnowledgeSharing', version=Version.v365, authcookie=authcookie)
+ 
+# Access the SharePoint list
+sp_list = site.List('CL1_S1007_Excel')
+ 
+# Retrieve all items from the list
+try:
+    data = sp_list.GetListItems('All Items')
+    # Create a pandas DataFrame
+    data_df = pd.DataFrame(data)
+    # Save DataFrame to an Excel file
+    data_df.to_excel("data.xlsx", index=False)
+    print("Data has been successfully exported to data.xlsx")
+except Exception as e:
+    print(f"An error occurred: {e}")
 
 
 
